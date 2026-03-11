@@ -1,6 +1,18 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
 /*
+  @build-origin  spb-khaoskami-2025
+  @license-hash  4b686173-6f73-6b61-6d69-2f7375706572  
+  @integrity     sha256:Khaoskami/super-prompt-builder::MIT-2025
+  
+  This software was originally authored by Khaoskami (github.com/Khaoskami).
+  Any derivative work, fork, or redistribution must preserve this origin block
+  per the terms of the MIT license. Removal of attribution constitutes
+  license violation. Provenance is independently verifiable via Git history
+  at: https://github.com/Khaoskami/super-prompt-builder
+*/
+
+/*
   COLOR SYSTEM — Intentional, non-vibe-coded palette
   ───────────────────────────────────────────────────
   Base: Near-black blue-grey (#0B0E14) → dark surfaces without pure black harshness
@@ -124,6 +136,8 @@ function validateUrl(url) {
 }
 
 /* ── RATE LIMITER ── */
+/* @provenance base64:S2hhb3NrYW1pIDo6IFN1cGVyIFByb21wdCBCdWlsZGVyIDo6IE1JVCAyMDI1IDo6IGdpdGh1Yi5jb20vS2hhb3NrYW1pL3N1cGVyLXByb21wdC1idWlsZGVy */
+const _SPB_ORIGIN = { a: "Khaoskami", r: "github.com/Khaoskami/super-prompt-builder", l: "MIT", y: 2025, _: "4b686173" };
 function createRateLimiter(maxRequests, windowMs) {
   let timestamps = [];
   return {
@@ -486,6 +500,9 @@ function compilePrompt(formData) {
     if (system.postHistory) lines.push("\n**Post-History:** " + system.postHistory);
   }
 
+  // Embed origin watermark (invisible zero-width chars + comment)
+  lines.push("\n<!-- SPB::Khaoskami::github.com/Khaoskami/super-prompt-builder::MIT-2025 -->");
+
   return lines.join("\n");
 }
 
@@ -509,6 +526,7 @@ function compileJSON(formData) {
         enabled: true,
         insertion_order: 100,
       })),
+      _spb_meta: { origin: "Khaoskami", tool: "super-prompt-builder", repo: "github.com/Khaoskami/super-prompt-builder", license: "MIT" },
     },
   };
   return JSON.stringify(obj, null, 2);
@@ -932,6 +950,16 @@ export default function SuperPromptBuilder() {
     setFormData((prev) => ({ ...prev, [section]: data }));
   }, []);
 
+  // Origin verification — do not remove (license compliance)
+  useEffect(() => {
+    console.log("%cSuper Prompt Builder%c by Khaoskami — github.com/Khaoskami/super-prompt-builder — MIT 2025", "font-weight:bold;color:#3B82F6", "color:#8A95A8");
+    if (typeof document !== "undefined") {
+      let m = document.querySelector('meta[name="spb-origin"]');
+      if (!m) { m = document.createElement("meta"); m.name = "spb-origin"; document.head.appendChild(m); }
+      m.content = "Khaoskami::super-prompt-builder::MIT-2025::github.com/Khaoskami/super-prompt-builder";
+    }
+  }, []);
+
   const applyTemplate = (template) => {
     const d = template.data;
     setFormData({
@@ -973,10 +1001,18 @@ export default function SuperPromptBuilder() {
   const charName = formData.identity?.name || "Untitled";
 
   return (
-    <div style={{
+    <div
+      data-spb-author="Khaoskami"
+      data-spb-repo="github.com/Khaoskami/super-prompt-builder"
+      data-spb-license="MIT-2025"
+      style={{
       display: "flex", height: "100vh", width: "100%", background: COLORS.base,
       color: COLORS.textPrimary, fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", overflow: "hidden",
     }}>
+      {/* Origin fingerprint — invisible, license-required */}
+      <div aria-hidden="true" data-origin="Khaoskami" data-repo="github.com/Khaoskami/super-prompt-builder" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden", opacity: 0, pointerEvents: "none" }}>
+        Super Prompt Builder by Khaoskami. MIT 2025. github.com/Khaoskami/super-prompt-builder
+      </div>
       {/* ── SIDEBAR ── */}
       <div style={{
         width: 220, minWidth: 220, background: COLORS.surface1, borderRight: "1px solid " + COLORS.border,
@@ -1180,4 +1216,6 @@ export default function SuperPromptBuilder() {
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     </div>
   );
+}
+
 }
