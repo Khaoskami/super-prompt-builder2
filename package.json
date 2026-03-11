@@ -1,0 +1,34 @@
+{
+  "name": "super-prompt-builder",
+  "version": "1.0.0",
+  "description": "Precision prompt construction tool for AI roleplay character creation",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^5.4.0"
+  },
+  "keywords": [
+    "ai",
+    "roleplay",
+    "prompt-engineering",
+    "character-creator",
+    "tavern",
+    "sillytavern",
+    "lorebook"
+  ],
+  "author": "Khaos",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Khaoskami/super-prompt-builder"
+  }
+}
